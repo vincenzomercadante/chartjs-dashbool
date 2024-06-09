@@ -33,9 +33,9 @@ export default {
 }
 
 .sidebar {
-  border: 3px solid $sidebar-txt-color;
+  border: 5px solid $sidebar-txt-color;
   img {
-    height: 60px;
+    height: 50px;
   }
 }
 </style>

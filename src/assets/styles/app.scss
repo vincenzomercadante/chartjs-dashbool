@@ -19,3 +19,12 @@ body {
     grid-template-rows: 7vh 93vh;
   }
 }
+
+ul {
+  list-style: none;
+
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+}
