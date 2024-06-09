@@ -15,8 +15,10 @@ export default {
 
 <template>
   <aside class="p-3">
+    <!-- main title -->
     <h1 class="m-0 fw-bold fs-5">- DashBool -</h1>
 
+    <!-- user pic -->
     <div class="d-flex align-items-center gap-3 mt-4">
       <UserImage type="sidebar" />
       <div>
@@ -27,8 +29,9 @@ export default {
       </div>
     </div>
 
-    <ul class="mt-4 p-0">
-      <li v-for="link in sidebarLinks" class="my-3">
+    <!-- nav link -->
+    <ul class="mt-4 p-0 fs-5">
+      <li v-for="link in sidebarLinks" class="my-2">
         <SidebarLink :item="link" />
       </li>
     </ul>

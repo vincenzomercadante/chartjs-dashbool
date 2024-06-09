@@ -15,9 +15,21 @@ import {
   faBars,
   faEnvelope,
   faChevronDown,
+  faHouseChimney,
+  faGear,
+  faMapLocationDot,
+  faChevronUp,
 } from "@fortawesome/free-solid-svg-icons";
 
-library.add(faBars, faEnvelope, faChevronDown);
+library.add(
+  faBars,
+  faEnvelope,
+  faChevronDown,
+  faHouseChimney,
+  faGear,
+  faMapLocationDot,
+  faChevronUp
+);
 
 const app = createApp(App);
 
