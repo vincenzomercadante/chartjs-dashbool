@@ -52,6 +52,10 @@ export default {
 <style lang="scss" scoped>
 @use "../../assets/styles/partials/variables" as *;
 
+.list-item {
+  cursor: pointer;
+}
+
 .custom-collapse-container {
   height: 0;
   overflow: hidden;
