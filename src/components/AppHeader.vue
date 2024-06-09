@@ -9,11 +9,15 @@ export default {
   <header
     class="d-flex justify-content-between align-items-center px-3 fw-bold"
   >
+    <!-- hamburger menu icon -->
     <div>
       <font-awesome-icon icon="fa-solid fa-bars" />
     </div>
+
+    <!-- header left -->
     <div class="d-flex gap-1 align-items-center gap-3">
       <font-awesome-icon icon="fa-solid fa-envelope" />
+      <!-- user section with img arrow and username -->
       <div class="d-flex gap-1 align-items-center">
         <UserImage type="header" />
         <h3 class="m-0">Mario Rossi</h3>

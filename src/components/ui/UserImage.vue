@@ -5,6 +5,7 @@ export default {
 </script>
 
 <template>
+  <!-- rounded image -->
   <div class="profile-image" :class="type === 'header' ? 'header' : 'sidebar'">
     <img src="../../assets/img/profile-img.webp" alt="profile image" />
   </div>
