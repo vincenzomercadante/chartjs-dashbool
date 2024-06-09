@@ -11,9 +11,13 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 
 // /* import specific icons */
-// import { all } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBars,
+  faEnvelope,
+  faChevronDown,
+} from "@fortawesome/free-solid-svg-icons";
 
-// library.add(...all);
+library.add(faBars, faEnvelope, faChevronDown);
 
 const app = createApp(App);
 
