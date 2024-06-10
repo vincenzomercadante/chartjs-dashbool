@@ -1,11 +1,51 @@
 <script>
 import Doughnut from "./charts/DoughnutChart.vue";
 import Bar from "./charts/BarChart.vue";
+import axios from "axios";
 import Line from "./charts/LineChart.vue";
+import { apiUri } from "../assets/store/store";
+import LoadingComponent from "./ui/Loading.vue";
 
 export default {
-  components: { Doughnut, Bar, Line },
-  data() {},
+  components: {
+    Doughnut,
+    LoadingComponent,
+    Bar,
+    Line,
+  },
+  data() {
+    return {
+      monthlyConnections: {
+        data: null,
+        received: false,
+      },
+      userAge: {
+        data: null,
+        received: false,
+      },
+    };
+  },
+
+  methods: {
+    fetchMonthlyConnections() {
+      axios.get(apiUri + "MonthlyConnections").then((res) => {
+        this.monthlyConnections.data = res.data;
+        this.monthlyConnections.received = true;
+      });
+    },
+
+    fetchUserAge() {
+      axios.get(apiUri + "UsersAgeRange").then((res) => {
+        this.userAge.data = res.data;
+        this.userAge.received = true;
+      });
+    },
+  },
+
+  mounted() {
+    this.fetchMonthlyConnections();
+    this.fetchUserAge();
+  },
 };
 </script>
 
@@ -16,15 +56,22 @@ export default {
         <!-- monthly connection chart -->
         <div class="col-12">
           <Line
+            v-if="monthlyConnections.received"
             canvaId="connection-chart"
             chartTitle="Monthly Connections"
             period="Montly"
+            :values="monthlyConnections"
           />
         </div>
 
         <!-- user age range chart -->
         <div class="col-6">
-          <Bar canvaId="user-range-bar" chartTitle="User Age Range" />
+          <Bar
+            v-if="userAge.received"
+            canvaId="user-range-bar"
+            chartTitle="User Age Range"
+            :values="userAge"
+          />
         </div>
 
         <!-- operating system chart -->
@@ -40,6 +87,7 @@ export default {
             canvaId="solar-power-chart"
             chartTitle="Solar Power"
             period="Daily"
+            :values="{}"
           />
         </div>
 
@@ -47,7 +95,11 @@ export default {
 
         <!-- user age range chart -->
         <div class="col-6">
-          <Bar canvaId="user-range-bar-today" chartTitle="User Age Range" />
+          <Bar
+            canvaId="user-range-bar-today"
+            chartTitle="User Age Range"
+            :values="{}"
+          />
         </div>
 
         <!-- operating system chart -->

@@ -18,3 +18,5 @@ export const sidebarLinks = [
     txt: "contacts",
   },
 ];
+
+export const apiUri = "http://localhost:3000/";

@@ -19,6 +19,7 @@ import {
   faGear,
   faMapLocationDot,
   faChevronUp,
+  faCircleNotch,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -28,7 +29,8 @@ library.add(
   faHouseChimney,
   faGear,
   faMapLocationDot,
-  faChevronUp
+  faChevronUp,
+  faCircleNotch
 );
 
 const app = createApp(App);

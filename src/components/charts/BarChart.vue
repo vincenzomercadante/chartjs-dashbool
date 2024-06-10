@@ -14,23 +14,37 @@ Chart.register(BarElement, Legend, Title, BarController, Tooltip);
 export default {
   data() {
     return {
-      // chart information
-      data: {
-        labels: ["Red", "Yellow", "Blue"],
+      labels: [],
+      data: [],
+    };
+  },
+
+  props: { chartTitle: String, canvaId: String, values: Object },
+
+  methods: {
+    getData() {
+      if (this.values.data) {
+        for (let ageRange of this.values.data) {
+          this.labels.push(ageRange.range);
+          this.data.push(ageRange.connections);
+        }
+      }
+
+      return {
+        labels: this.labels,
         datasets: [
           {
-            data: [300, 50, 100],
-            backgroundColor: [
-              "rgb(255, 99, 132)",
-              "rgb(54, 162, 235)",
-              "rgb(255, 205, 86)",
-            ],
+            label: this.period,
+            data: this.data,
+
             hoverOffset: 4,
           },
         ],
-      },
-      // chart options
-      options: {
+      };
+    },
+
+    getOptions() {
+      return {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
@@ -38,11 +52,9 @@ export default {
             display: false,
           },
         },
-      },
-    };
+      };
+    },
   },
-
-  props: { chartTitle: String, canvaId: String },
 
   mounted() {
     // get chart canva
@@ -51,8 +63,8 @@ export default {
     // create a new istance of chart
     const myChart = new Chart(canva, {
       type: "bar",
-      data: this.data,
-      options: this.options,
+      data: this.getData(),
+      options: this.getOptions(),
     });
   },
 };

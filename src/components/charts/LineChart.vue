@@ -29,13 +29,58 @@ Chart.register(
 export default {
   data() {
     return {
+      labels: [],
+      data: [],
       // chart informations
-      data: {
-        labels: ["Red", "Yellow", "Blue"],
+      // data: {
+      //   labels: ["Red", "Yellow", "Blue"],
+      //   datasets: [
+      //     {
+      //       label: this.period,
+      //       data: [300, 50, 100],
+      //       backgroundColor: "#dfeaec",
+      //       bordercolor: "#91b7be",
+      //       hoverOffset: 4,
+      //       fill: "start",
+      //       tension: 0.4,
+      //     },
+      //   ],
+      // },
+      // // chart options
+      // options: {
+      //   responsive: true,
+      //   maintainAspectRatio: false,
+      //   plugins: {
+      //     legend: {
+      //       display: true,
+      //     },
+      //   },
+      // },
+    };
+  },
+
+  props: {
+    chartTitle: String,
+    canvaId: String,
+    period: String,
+    values: Object,
+  },
+
+  methods: {
+    getData() {
+      if (this.values.data) {
+        for (let connection of this.values.data) {
+          this.labels.push(connection.month);
+          this.data.push(connection.connections);
+        }
+      }
+
+      return {
+        labels: this.labels,
         datasets: [
           {
             label: this.period,
-            data: [300, 50, 100],
+            data: this.data,
             backgroundColor: "#dfeaec",
             bordercolor: "#91b7be",
             hoverOffset: 4,
@@ -43,10 +88,11 @@ export default {
             tension: 0.4,
           },
         ],
-      },
+      };
+    },
 
-      // chart options
-      options: {
+    getOptions() {
+      return {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
@@ -54,11 +100,9 @@ export default {
             display: true,
           },
         },
-      },
-    };
+      };
+    },
   },
-
-  props: { chartTitle: String, canvaId: String, period: String },
 
   mounted() {
     // get chart's canva
@@ -67,8 +111,8 @@ export default {
     // create new istance of chart
     const myChart = new Chart(canva, {
       type: "line",
-      data: this.data,
-      options: this.options,
+      data: this.getData(),
+      options: this.getOptions(),
     });
   },
 };
