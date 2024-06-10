@@ -29,6 +29,13 @@ export default {
       </div>
     </div>
 
+    <!-- section title -->
+    <div class="mt-3">
+      <h2 class="m-0 fs-6 fw-bold text-uppercase">General</h2>
+      <!-- divider line -->
+      <div class="divider my-2"></div>
+    </div>
+
     <!-- nav link -->
     <ul class="mt-4 p-0 fs-5">
       <li v-for="link in sidebarLinks" class="my-2">
@@ -43,5 +50,9 @@ export default {
 aside {
   background-color: $sidebar-bg-color;
   color: $sidebar-txt-color;
+
+  .divider {
+    border: 3px solid $sidebar-txt-color;
+  }
 }
 </style>
