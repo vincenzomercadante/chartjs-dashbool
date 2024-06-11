@@ -1,4 +1,6 @@
 <script>
+import { colors } from "../../assets/store/store";
+
 // import all the necessarry stuff to create the chart
 import {
   Chart,
@@ -8,6 +10,7 @@ import {
   BarController,
   Tooltip,
 } from "chart.js";
+import { color } from "chart.js/helpers";
 
 Chart.register(BarElement, Legend, Title, BarController, Tooltip);
 
@@ -16,18 +19,22 @@ export default {
     return {
       labels: [],
       data: [],
+      bgColors: [],
     };
   },
 
   props: { chartTitle: String, canvaId: String, values: Object },
 
   methods: {
+    // get the chart data
     getData() {
       if (this.values.data) {
         for (let ageRange of this.values.data) {
           this.labels.push(ageRange.range);
           this.data.push(ageRange.connections);
         }
+
+        this.getBackgroundColors();
       }
 
       return {
@@ -36,13 +43,14 @@ export default {
           {
             label: this.period,
             data: this.data,
-
             hoverOffset: 4,
+            backgroundColor: this.bgColors,
           },
         ],
       };
     },
 
+    // get the chart options
     getOptions() {
       return {
         responsive: true,
@@ -53,6 +61,13 @@ export default {
           },
         },
       };
+    },
+
+    // fill the bgcolors array based on the labels' array
+    getBackgroundColors() {
+      for (let i = 0; i < this.labels.length; i++) {
+        this.bgColors.push(colors[i]);
+      }
     },
   },
 

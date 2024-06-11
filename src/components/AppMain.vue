@@ -23,6 +23,10 @@ export default {
         data: null,
         received: false,
       },
+      monthlyDevices: {
+        data: null,
+        received: false,
+      },
     };
   },
 
@@ -40,11 +44,19 @@ export default {
         this.userAge.received = true;
       });
     },
+
+    fetchMonthlyDevices() {
+      axios.get(apiUri + "Devices").then((res) => {
+        this.monthlyDevices.data = res.data;
+        this.monthlyDevices.received = true;
+      });
+    },
   },
 
   mounted() {
     this.fetchMonthlyConnections();
     this.fetchUserAge();
+    this.fetchMonthlyDevices();
   },
 };
 </script>
@@ -76,7 +88,12 @@ export default {
 
         <!-- operating system chart -->
         <div class="col-6">
-          <Doughnut chartTitle="Operating System" canvaId="os-doughnut" />
+          <Doughnut
+            v-if="monthlyDevices.received"
+            chartTitle="Operating System"
+            canvaId="os-doughnut"
+            :values="monthlyDevices"
+          />
         </div>
       </div>
 
@@ -104,7 +121,11 @@ export default {
 
         <!-- operating system chart -->
         <div class="col-6">
-          <Doughnut chartTitle="Operating System" canvaId="os-doughnut-today" />
+          <Doughnut
+            chartTitle="Operating System"
+            canvaId="os-doughnut-today"
+            :values="{}"
+          />
         </div>
       </div>
     </div>

@@ -20,3 +20,5 @@ export const sidebarLinks = [
 ];
 
 export const apiUri = "http://localhost:3000/";
+
+export const colors = ["#c45850", "#e8c3b9", "#5abb9f", "#8e5ea3", "#3e95cd"];
