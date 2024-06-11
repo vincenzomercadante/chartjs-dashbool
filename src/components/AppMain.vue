@@ -70,7 +70,9 @@ export default {
       axios.get(apiUri + "DailyConnections").then((res) => {
         const dailyConnections = res.data;
         for (let connection of dailyConnections) {
+          // fill the daily device array
           this.getDailyDevice(connection);
+          // fill the daily user age range array
           this.getDailyUserRange(connection);
         }
         this.dailyDevice.received = true;
@@ -78,13 +80,18 @@ export default {
       });
     },
 
-    // get the daily device connected
+    /**
+     * calculate all the connections based on operating system
+     * @param {object} connection the specific connection where i have to find the device
+     */
     getDailyDevice(connection) {
       const dailyDeviceItem = this.itemExists(connection.device, "device");
 
       if (dailyDeviceItem) {
+        // increment connections if the item exists
         dailyDeviceItem.connections++;
       } else {
+        // add new os to the array if doesn't exists
         const item = {
           os: connection.device,
           connections: 1,
@@ -93,13 +100,18 @@ export default {
       }
     },
 
-    // get the daily user age connected
+    /**
+     * calculate all the connections based on age range
+     * @param {object} connection the specific connection where i have to find the user age range
+     */
     getDailyUserRange(connection) {
       const dailyAgeItem = this.itemExists(connection.age, "age");
 
       if (dailyAgeItem) {
+        // increment connection if item exists
         dailyAgeItem.connections++;
       } else {
+        // add a new range to the array
         const item = {
           range: connection.age,
           connections: 1,
@@ -108,6 +120,13 @@ export default {
       }
     },
 
+    /**
+     * Find a specific item in array
+     * @param {string} haystack what i have to
+     * @param {string} type to define what is to be searched between device or age range
+     * @returns needle that define the found item or false if there isn't item equals to the haystack
+     *
+     */
     itemExists(haystack, type) {
       const needle =
         type === "device"
