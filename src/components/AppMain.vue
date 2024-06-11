@@ -3,16 +3,15 @@ import Doughnut from "./charts/DoughnutChart.vue";
 import Bar from "./charts/BarChart.vue";
 import axios from "axios";
 import Line from "./charts/LineChart.vue";
+import SolarLine from "./charts/SolarChart.vue";
 import { apiUri } from "../assets/store/store";
-import LoadingComponent from "./ui/Loading.vue";
-import { faL } from "@fortawesome/free-solid-svg-icons";
 
 export default {
   components: {
     Doughnut,
-    LoadingComponent,
     Bar,
     Line,
+    SolarLine,
   },
   data() {
     return {
@@ -186,10 +185,9 @@ export default {
       <div class="row g-3">
         <!-- solar power chart -->
         <div class="col-12">
-          <Line
+          <SolarLine
             canvaId="solar-power-chart"
             chartTitle="Solar Power"
-            period="Daily"
             :values="{}"
           />
         </div>
