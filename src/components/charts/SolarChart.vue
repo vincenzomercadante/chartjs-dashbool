@@ -37,7 +37,6 @@ export default {
   props: {
     chartTitle: String,
     canvaId: String,
-    period: String,
     values: Object,
   },
 
@@ -54,7 +53,7 @@ export default {
         labels: this.labels,
         datasets: [
           {
-            label: "Monthly",
+            label: "Daily",
             data: this.data,
             backgroundColor: "#dfeaec",
             bordercolor: "#91b7be",
