@@ -1,6 +1,7 @@
 <script>
-// import all the necessarry stuff to create the chart
+import { colors } from "../../assets/store/store";
 
+// import all the necessarry stuff to create the chart
 import {
   Chart,
   ArcElement,
@@ -23,24 +24,40 @@ Chart.register(
 export default {
   data() {
     return {
-      // chart's information
-      data: {
-        labels: ["Red", "Yellow", "Blue"],
+      labels: [],
+      data: [],
+      bgColors: [],
+    };
+  },
+
+  methods: {
+    // get the chart data
+    getData() {
+      if (this.values.data) {
+        for (let connection of this.values.data) {
+          this.labels.push(connection.os);
+          this.data.push(connection.connections);
+        }
+
+        this.getBackgroundColors();
+      }
+
+      return {
+        labels: this.labels,
         datasets: [
           {
-            data: [300, 50, 100],
-            backgroundColor: [
-              "rgb(255, 99, 132)",
-              "rgb(54, 162, 235)",
-              "rgb(255, 205, 86)",
-            ],
+            label: this.period,
+            data: this.data,
             hoverOffset: 4,
+            backgroundColor: this.bgColors,
           },
         ],
-      },
+      };
+    },
 
-      // chart's options
-      options: {
+    // get the chart options
+    getOptions() {
+      return {
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
@@ -49,11 +66,18 @@ export default {
             align: "center",
           },
         },
-      },
-    };
+      };
+    },
+
+    // fill the bgcolors array based on the labels' array
+    getBackgroundColors() {
+      for (let i = 0; i < this.labels.length; i++) {
+        this.bgColors.push(colors[i]);
+      }
+    },
   },
 
-  props: { chartTitle: String, canvaId: String },
+  props: { chartTitle: String, canvaId: String, values: Object },
 
   mounted() {
     // get chart's canva
@@ -62,8 +86,8 @@ export default {
     // create new chart istance
     const myChart = new Chart(canva, {
       type: "doughnut",
-      data: this.data,
-      options: this.options,
+      data: this.getData(),
+      options: this.getOptions(),
     });
   },
 };
