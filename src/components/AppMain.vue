@@ -5,6 +5,7 @@ import axios from "axios";
 import Line from "./charts/LineChart.vue";
 import { apiUri } from "../assets/store/store";
 import LoadingComponent from "./ui/Loading.vue";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 
 export default {
   components: {
@@ -27,10 +28,21 @@ export default {
         data: null,
         received: false,
       },
+
+      dailyDevice: {
+        data: [],
+        received: null,
+      },
+
+      dailyUserAge: {
+        data: [],
+        received: null,
+      },
     };
   },
 
   methods: {
+    // get all the monthly connections
     fetchMonthlyConnections() {
       axios.get(apiUri + "MonthlyConnections").then((res) => {
         this.monthlyConnections.data = res.data;
@@ -38,6 +50,7 @@ export default {
       });
     },
 
+    // get all the monthly connections user age
     fetchUserAge() {
       axios.get(apiUri + "UsersAgeRange").then((res) => {
         this.userAge.data = res.data;
@@ -45,11 +58,64 @@ export default {
       });
     },
 
+    // get all the monthly connections devices
     fetchMonthlyDevices() {
       axios.get(apiUri + "Devices").then((res) => {
         this.monthlyDevices.data = res.data;
         this.monthlyDevices.received = true;
       });
+    },
+
+    fetchDailyConnections() {
+      axios.get(apiUri + "DailyConnections").then((res) => {
+        const dailyConnections = res.data;
+        for (let connection of dailyConnections) {
+          this.getDailyDevice(connection);
+          this.getDailyUserRange(connection);
+        }
+        this.dailyDevice.received = true;
+        this.dailyUserAge.received = true;
+      });
+    },
+
+    // get the daily device connected
+    getDailyDevice(connection) {
+      const dailyDeviceItem = this.itemExists(connection.device, "device");
+
+      if (dailyDeviceItem) {
+        dailyDeviceItem.connections++;
+      } else {
+        const item = {
+          os: connection.device,
+          connections: 1,
+        };
+        this.dailyDevice.data.push(item);
+      }
+    },
+
+    // get the daily user age connected
+    getDailyUserRange(connection) {
+      const dailyAgeItem = this.itemExists(connection.age, "age");
+
+      if (dailyAgeItem) {
+        dailyAgeItem.connections++;
+      } else {
+        const item = {
+          range: connection.age,
+          connections: 1,
+        };
+        this.dailyUserAge.data.push(item);
+      }
+    },
+
+    itemExists(haystack, type) {
+      const needle =
+        type === "device"
+          ? this.dailyDevice.data.find((item) => item.os === haystack)
+          : this.dailyUserAge.data.find((item) => item.range === haystack);
+
+      if (needle) return needle;
+      else return false;
     },
   },
 
@@ -57,6 +123,7 @@ export default {
     this.fetchMonthlyConnections();
     this.fetchUserAge();
     this.fetchMonthlyDevices();
+    this.fetchDailyConnections();
   },
 };
 </script>
@@ -113,18 +180,20 @@ export default {
         <!-- user age range chart -->
         <div class="col-6">
           <Bar
+            v-if="dailyUserAge.received"
             canvaId="user-range-bar-today"
             chartTitle="User Age Range"
-            :values="{}"
+            :values="dailyUserAge"
           />
         </div>
 
         <!-- operating system chart -->
         <div class="col-6">
           <Doughnut
+            v-if="dailyDevice.received"
             chartTitle="Operating System"
             canvaId="os-doughnut-today"
-            :values="{}"
+            :values="dailyDevice"
           />
         </div>
       </div>
